@@ -14,20 +14,20 @@ body {
 }
 
 .page {
-  width: 1600px;
-  height: 1024px;
+  width: 1400px;
+  height: 820px;
   background: url("page.png") no-repeat;
   background-size: cover;
   position: relative;
   user-select: none;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .projects {
   position: absolute;
-  top: 304px;
-  left: 326px;
-  width: 1272px;
-  transform: translateY(-254px);
+  top: 50px;
+  left: 324px;
 }
 
 .bg {
@@ -48,15 +48,15 @@ body {
 }
 
 .border {
-  stroke-width: 2px;
+  stroke-width: 1.5px;
   mix-blend-mode: overlay;
 }
 
 .outer-banner {
   position: absolute;
-  right: 16px;
-  top: 68px;
-  width: 1240px;
+  right: 24px;
+  top: 76px;
+  width: 1028px;
   height: 220px;
   overflow: hidden;
   border-radius: 8px;

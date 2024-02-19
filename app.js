@@ -20,23 +20,19 @@ function startAnimations() {
 
   tl.add({
     targets: ".projects",
-    translateY: [-254, 0],
+    translateY: [0, 254],
     duration: 400,
-    // easing: "cubicBezier(0.5, 0, 0, 1)",
   });
 
-  tl.add(
-    {
-      targets: "#myRect",
-      strokeDashoffset: [anime.setDashoffset, 0],
-      duration: 1400,
-      opacity: {
-        value: [0, 1],
-        duration: 1000,
-      },
+  tl.add({
+    targets: "#myRect",
+    strokeDashoffset: [anime.setDashoffset, 0],
+    duration: 1400,
+    opacity: {
+      value: [0, 1],
+      duration: 800,
     },
-    "-=400"
-  );
+  });
 
   tl.add(
     {
