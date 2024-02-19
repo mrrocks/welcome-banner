@@ -18,8 +18,8 @@ function startAnimations() {
     {
       targets: ".projects",
       translateY: [-254, 0],
-      duration: 1000,
-      easing: "cubicBezier(0.5, 0, 0, 1)",
+      duration: bannerAnimationStart + 400,
+      // easing: "cubicBezier(0.5, 0, 0, 1)",
     },
     0
   );
@@ -31,10 +31,19 @@ function startAnimations() {
       duration: 1600,
       opacity: {
         value: [0, 1],
-        duration: 600,
+        duration: 800,
       },
     },
     bannerAnimationStart
+  );
+
+  tl.add(
+    {
+      targets: "#myRect",
+      opacity: [1, 0.6],
+      duration: 600,
+    },
+    bannerAnimationStart + 1000
   );
 
   tl.add(
