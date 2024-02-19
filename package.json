@@ -1,0 +1,9 @@
+{
+  "name": "welcome-banner",
+  "version": "1.0.0",
+  "main": "index.html",
+  "license": "ISC",
+  "dependencies": {
+    "animejs": "^3.2.2"
+  }
+}
