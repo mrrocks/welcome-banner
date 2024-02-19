@@ -3,12 +3,16 @@ import anime from "https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js";
 let animationPlayed = false;
 
 function startAnimations() {
-  const bannerAnimationStart = 400;
-  const offsetX = 240;
-  const offsetY = 120;
+  const bannerAnimationStart = 0;
+  const offsetX = 400;
+  const offsetY = 140;
+  const button = document.querySelector(".button-mask");
+
+  button.style.setProperty("--mask-x", `-${offsetX}px`);
+  button.style.setProperty("--mask-y", `-${offsetY}px`);
 
   anime.remove(
-    ".projects, #myRect, .bg, .icons img, .info img, .info .button-base"
+    ".projects, #myRect, .bg, .icons img, .info img, .info .button-base, .button-mask"
   );
 
   document.querySelector(".page").removeEventListener("click", startAnimations);
@@ -24,24 +28,24 @@ function startAnimations() {
     duration: 400,
   });
 
-  tl.add({
-    targets: "#myRect",
-    strokeDashoffset: [anime.setDashoffset, 0],
-    duration: 1400,
-    opacity: {
-      value: [0, 1],
-      duration: 800,
-    },
-  });
-
   tl.add(
     {
       targets: "#myRect",
-      opacity: [1, 0.4],
-      duration: 600,
+      strokeDashoffset: [anime.setDashoffset, 0],
+      duration: 1200,
+      opacity: {
+        value: [0, 1],
+        duration: 300,
+      },
     },
-    bannerAnimationStart + 1000
+    bannerAnimationStart
   );
+
+  tl.add({
+    targets: "#myRect",
+    opacity: [1, 0.6],
+    duration: 600,
+  });
 
   tl.add(
     {
@@ -52,7 +56,7 @@ function startAnimations() {
       rotate: [-2, 0],
       duration: 2000,
     },
-    bannerAnimationStart
+    bannerAnimationStart + 400
   );
 
   tl.add(
@@ -68,7 +72,7 @@ function startAnimations() {
             `${anim.animations[0].currentValue}%`
           ),
     },
-    bannerAnimationStart
+    bannerAnimationStart + 400
   );
 
   tl.add(
@@ -79,27 +83,13 @@ function startAnimations() {
       delay: anime.stagger(120),
       duration: 400,
     },
-    bannerAnimationStart + 200
+    bannerAnimationStart + 800
   );
 
   tl.add(
     {
       targets: ".button-mask",
-      opacity: [0, 1],
-      duration: 150,
-      begin: function (anim) {
-        const button = document.querySelector(".button-mask");
-        button.style.setProperty("--mask-x", `-${offsetX}px`);
-        button.style.setProperty("--mask-y", `-${offsetY}px`);
-      },
-    },
-    "-=1100"
-  );
-
-  tl.add(
-    {
-      targets: ".button-mask",
-      duration: 2000,
+      duration: 2400,
       update: function (anim) {
         const button = document.querySelector(".button-mask");
         const buttonWidth = button.offsetWidth;
@@ -123,7 +113,7 @@ function startAnimations() {
         });
       },
     },
-    "-=1300"
+    bannerAnimationStart + 800
   );
 
   if (animationPlayed) {
