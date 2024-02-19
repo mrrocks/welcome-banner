@@ -22,11 +22,15 @@ function startAnimations() {
     autoplay: false,
   });
 
-  tl.add({
-    targets: ".projects",
-    translateY: [0, 254],
-    duration: 400,
-  });
+  tl.add(
+    {
+      targets: ".projects",
+      translateY: [0, 254],
+      duration: 800,
+      easing: "spring(1, 40, 80, 0)",
+    },
+    bannerAnimationStart
+  );
 
   tl.add(
     {
@@ -35,7 +39,7 @@ function startAnimations() {
       duration: 1200,
       opacity: {
         value: [0, 1],
-        duration: 300,
+        duration: 800,
       },
     },
     bannerAnimationStart
@@ -45,6 +49,7 @@ function startAnimations() {
     targets: "#myRect",
     opacity: [1, 0.6],
     duration: 600,
+    delay: 200,
   });
 
   tl.add(

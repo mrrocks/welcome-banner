@@ -13,6 +13,14 @@ body {
   background-color: #000;
 }
 
+.disclaimer {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  color: #fff;
+  font-size: 12px;
+}
+
 .page {
   width: 1400px;
   height: 820px;
@@ -49,7 +57,7 @@ body {
 
 .border {
   stroke-width: 1.5px;
-  mix-blend-mode: overlay;
+  mix-blend-mode: soft-light;
 }
 
 .outer-banner {
@@ -114,7 +122,7 @@ body {
   transition: box-shadow 300ms ease;
 }
 .button-base:hover {
-  box-shadow: 0px 12px 32px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 8px 16px 32px 0px rgba(0, 0, 0, 0.24);
 }
 .button-base img {
   position: absolute;
