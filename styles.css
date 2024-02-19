@@ -49,7 +49,7 @@ body {
 
 .border {
   stroke-width: 2px;
-  mix-blend-mode: soft-light;
+  mix-blend-mode: overlay;
 }
 
 .outer-banner {
@@ -126,7 +126,6 @@ body {
   --mask-y: 0px;
   width: inherit;
   height: inherit;
-  opacity: 0;
   mask-image: radial-gradient(
     circle at var(--mask-x) var(--mask-y),
     rgba(0, 0, 0, 1) 0%,

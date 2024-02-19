@@ -4,43 +4,44 @@ let animationPlayed = false;
 
 function startAnimations() {
   const bannerAnimationStart = 400;
+  const offsetX = 240;
+  const offsetY = 120;
 
   anime.remove(
     ".projects, #myRect, .bg, .icons img, .info img, .info .button-base"
   );
+
+  document.querySelector(".page").removeEventListener("click", startAnimations);
 
   var tl = anime.timeline({
     easing: "easeInOutSine",
     autoplay: false,
   });
 
-  tl.add(
-    {
-      targets: ".projects",
-      translateY: [-254, 0],
-      duration: bannerAnimationStart + 400,
-      // easing: "cubicBezier(0.5, 0, 0, 1)",
-    },
-    0
-  );
+  tl.add({
+    targets: ".projects",
+    translateY: [-254, 0],
+    duration: 400,
+    // easing: "cubicBezier(0.5, 0, 0, 1)",
+  });
 
   tl.add(
     {
       targets: "#myRect",
       strokeDashoffset: [anime.setDashoffset, 0],
-      duration: 1600,
+      duration: 1400,
       opacity: {
         value: [0, 1],
-        duration: 800,
+        duration: 1000,
       },
     },
-    bannerAnimationStart
+    "-=400"
   );
 
   tl.add(
     {
       targets: "#myRect",
-      opacity: [1, 0.6],
+      opacity: [1, 0.4],
       duration: 600,
     },
     bannerAnimationStart + 1000
@@ -85,6 +86,50 @@ function startAnimations() {
     bannerAnimationStart + 200
   );
 
+  tl.add(
+    {
+      targets: ".button-mask",
+      opacity: [0, 1],
+      duration: 150,
+      begin: function (anim) {
+        const button = document.querySelector(".button-mask");
+        button.style.setProperty("--mask-x", `-${offsetX}px`);
+        button.style.setProperty("--mask-y", `-${offsetY}px`);
+      },
+    },
+    "-=1100"
+  );
+
+  tl.add(
+    {
+      targets: ".button-mask",
+      duration: 2000,
+      update: function (anim) {
+        const button = document.querySelector(".button-mask");
+        const buttonWidth = button.offsetWidth;
+        const buttonHeight = button.offsetHeight;
+        const progress = anim.progress / 100;
+        const valueX = -offsetX + progress * (buttonWidth + offsetX - -offsetX);
+        const valueY =
+          -offsetY + progress * (buttonHeight + offsetY - -offsetY);
+
+        button.style.setProperty("--mask-x", `${valueX}px`);
+        button.style.setProperty("--mask-y", `${valueY}px`);
+      },
+      complete: function () {
+        document.addEventListener("mousemove", function (e) {
+          const button = document.querySelector(".button-mask");
+          const buttonRect = button.getBoundingClientRect();
+          const x = e.clientX - buttonRect.left;
+          const y = e.clientY - buttonRect.top;
+          button.style.setProperty("--mask-x", `${x}px`);
+          button.style.setProperty("--mask-y", `${y}px`);
+        });
+      },
+    },
+    "-=1300"
+  );
+
   if (animationPlayed) {
     tl.seek(0);
     tl.pause();
@@ -93,21 +138,8 @@ function startAnimations() {
     tl.play();
     animationPlayed = true;
   }
+
+  document.querySelector(".page").addEventListener("click", startAnimations);
 }
 
-document.addEventListener("mousemove", function (e) {
-  const button = document.querySelector(".button-mask");
-  const buttonRect = button.getBoundingClientRect();
-
-  const x = e.clientX - buttonRect.left;
-  const y = e.clientY - buttonRect.top;
-
-  button.style.setProperty("--mask-x", `${x}px`);
-  button.style.setProperty("--mask-y", `${y}px`);
-
-  button.style.opacity = 1;
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelector(".page").addEventListener("click", startAnimations);
-});
+document.querySelector(".page").addEventListener("click", startAnimations);
