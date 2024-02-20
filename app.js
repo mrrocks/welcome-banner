@@ -3,7 +3,7 @@ import anime from "https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js";
 const page = document.querySelector(".page");
 const button = document.querySelector(".button-mask");
 
-const offsetX = 400;
+const offsetX = 200;
 const offsetY = 140;
 const bannerAnimationStart = 0;
 
@@ -91,7 +91,11 @@ function startAnimations() {
     .add(
       {
         targets: ".button-mask",
-        duration: 2400,
+        duration: 1200,
+        begin: function (anim) {
+          console.log("begin");
+        },
+
         update: function (anim) {
           const progress = anim.progress / 100;
           const valueX =
@@ -103,7 +107,7 @@ function startAnimations() {
           button.style.setProperty("--mask-y", `${valueY}px`);
         },
       },
-      bannerAnimationStart + 800
+      bannerAnimationStart + 1400
     );
 
   if (animationPlayed) {
