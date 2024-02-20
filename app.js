@@ -19,7 +19,7 @@ function startAnimations() {
 
   page.removeEventListener("click", startAnimations);
 
-  var tl = anime.timeline({
+  const tl = anime.timeline({
     easing: "easeInOutSine",
     autoplay: false,
     complete: mouseTracking,
@@ -119,8 +119,7 @@ function startAnimations() {
 }
 
 const mouseTracking = () => {
-  page.addEventListener("mousemove", function (e) {
-    const button = document.querySelector(".button-mask");
+  page.addEventListener("mousemove", (e) => {
     const buttonRect = button.getBoundingClientRect();
     const x = e.clientX - buttonRect.left;
     const y = e.clientY - buttonRect.top;
