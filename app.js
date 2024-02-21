@@ -1,28 +1,16 @@
 import anime from "https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js";
 
-const page = document.querySelector(".page");
-const button = document.querySelector(".button-mask");
+const select = (selector) => document.querySelector(selector);
 
-const offsetX = 200;
-const offsetY = 140;
-const bannerAnimationStart = 0;
+const setProperty = (element, property, value) =>
+  element.style.setProperty(property, value);
 
-let animationPlayed = false;
-
-function startAnimations() {
-  button.style.setProperty("--mask-x", `-${offsetX}px`);
-  button.style.setProperty("--mask-y", `-${offsetY}px`);
-
-  anime.remove(
-    ".projects, #myRect, .bg, .icons img, .info img, .info .button-base, .button-mask"
-  );
-
-  page.removeEventListener("click", startAnimations);
+const createAnimationTimeline = (button, offsetX, offsetY) => {
+  const animationStartTime = 0;
 
   const tl = anime.timeline({
     easing: "easeInOutSine",
     autoplay: false,
-    complete: mouseTracking,
   });
 
   tl.add(
@@ -32,7 +20,7 @@ function startAnimations() {
       duration: 800,
       easing: "spring(1, 40, 80, 0)",
     },
-    bannerAnimationStart
+    animationStartTime
   )
     .add(
       {
@@ -44,7 +32,7 @@ function startAnimations() {
           duration: 800,
         },
       },
-      bannerAnimationStart
+      animationStartTime
     )
     .add({
       targets: "#myRect",
@@ -61,7 +49,7 @@ function startAnimations() {
         rotate: [-2, 0],
         duration: 2000,
       },
-      bannerAnimationStart + 400
+      animationStartTime + 400
     )
     .add(
       {
@@ -76,7 +64,7 @@ function startAnimations() {
               `${anim.animations[0].currentValue}%`
             ),
       },
-      bannerAnimationStart + 400
+      animationStartTime + 400
     )
     .add(
       {
@@ -86,16 +74,12 @@ function startAnimations() {
         delay: anime.stagger(120),
         duration: 400,
       },
-      bannerAnimationStart + 800
+      animationStartTime + 800
     )
     .add(
       {
         targets: ".button-mask",
         duration: 1200,
-        begin: function (anim) {
-          console.log("begin");
-        },
-
         update: function (anim) {
           const progress = anim.progress / 100;
           const valueX =
@@ -107,29 +91,44 @@ function startAnimations() {
           button.style.setProperty("--mask-y", `${valueY}px`);
         },
       },
-      bannerAnimationStart + 1400
+      animationStartTime + 1400
     );
 
-  if (animationPlayed) {
-    tl.seek(0);
-    tl.pause();
-    animationPlayed = false;
-  } else {
-    tl.play();
-    animationPlayed = true;
-  }
-
-  page.addEventListener("click", startAnimations);
-}
-
-const mouseTracking = () => {
-  page.addEventListener("mousemove", (e) => {
-    const buttonRect = button.getBoundingClientRect();
-    const x = e.clientX - buttonRect.left;
-    const y = e.clientY - buttonRect.top;
-    button.style.setProperty("--mask-x", `${x}px`);
-    button.style.setProperty("--mask-y", `${y}px`);
-  });
+  return tl;
 };
 
-page.addEventListener("click", startAnimations);
+const mouseTracking = (button) => (e) => {
+  const buttonRect = button.getBoundingClientRect();
+  const x = e.clientX - buttonRect.left;
+  const y = e.clientY - buttonRect.top;
+  setProperty(button, "--mask-x", `${x}px`);
+  setProperty(button, "--mask-y", `${y}px`);
+};
+
+const startAnimations = (button, offsetX, offsetY) => {
+  let animationPlayed = false;
+  const tl = createAnimationTimeline(button, offsetX, offsetY);
+
+  return () => {
+    if (animationPlayed) {
+      tl.seek(0);
+      tl.pause();
+    } else {
+      tl.play();
+    }
+    animationPlayed = !animationPlayed;
+  };
+};
+
+const init = () => {
+  const page = select(".page");
+  const button = select(".button-mask");
+  const offsetX = 200;
+  const offsetY = 140;
+
+  const handleStartAnimations = startAnimations(button, offsetX, offsetY);
+  page.addEventListener("click", handleStartAnimations);
+  page.addEventListener("mousemove", mouseTracking(button));
+};
+
+init();
