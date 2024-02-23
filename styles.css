@@ -44,6 +44,22 @@ body {
   z-index: 1;
 }
 
+.account-ready {
+  position: absolute;
+  z-index: 2;
+  background: url("account-ready.png") no-repeat;
+  background-size: cover;
+  cursor: pointer;
+  width: 1400px;
+  height: 820px;
+}
+
+.account-ready video {
+  opacity: 0;
+  cursor: default;
+  display: none;
+}
+
 .projects-image {
   position: absolute;
   top: 50px;
@@ -86,7 +102,7 @@ body {
   position: absolute;
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 41px;
   top: 0;
   width: inherit;
   height: inherit;
@@ -104,7 +120,7 @@ body {
 .banner-info {
   display: flex;
   flex-direction: column;
-  gap: 23px;
+  gap: 11px;
 }
 
 .banner-bottom-section {

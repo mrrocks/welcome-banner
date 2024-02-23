@@ -151,6 +151,7 @@ const startAnimations = (button, offsetX, offsetY) => {
       tl.seek(0);
       tl.pause();
       window.removeEventListener("mousemove", handleMouseTracking);
+      resetAccountReady();
     } else {
       tl.play();
     }
@@ -158,14 +159,59 @@ const startAnimations = (button, offsetX, offsetY) => {
   };
 };
 
+function animateAccountReady(handleStartAnimations) {
+  const accountReady = select(".account-ready");
+  const video = select("#welcome-video");
+
+  accountReady.addEventListener("click", () => {
+    video.style.display = "initial";
+    anime({
+      targets: video,
+      opacity: 1,
+      duration: 300,
+      easing: "linear",
+      begin: function () {
+        video.play();
+      },
+    });
+  });
+
+  video.addEventListener("ended", () => {
+    anime({
+      targets: accountReady,
+      opacity: 0,
+      duration: 300,
+      easing: "linear",
+      complete: function () {
+        accountReady.style.display = "none";
+        handleStartAnimations();
+      },
+    });
+  });
+}
+
+const resetAccountReady = () => {
+  const accountReady = select(".account-ready");
+  const video = select("#welcome-video");
+
+  accountReady.style.display = "";
+  accountReady.style.opacity = 1;
+
+  video.pause();
+  video.currentTime = 0;
+  video.style.opacity = 0;
+  video.style.display = "none";
+};
+
 const init = () => {
-  const page = select(".page");
   const button = select(".interactive-button-mask");
   const offsetX = 200;
   const offsetY = 140;
 
   const handleStartAnimations = startAnimations(button, offsetX, offsetY);
-  page.addEventListener("click", handleStartAnimations);
+  button.addEventListener("click", handleStartAnimations);
+
+  animateAccountReady(handleStartAnimations);
 };
 
 init();
