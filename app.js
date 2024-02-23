@@ -23,7 +23,7 @@ const createAnimationTimeline = (
 
   tl.add(
     {
-      targets: ".projects",
+      targets: ".projects-image",
       translateY: [0, 254],
       duration: 800,
       easing: "spring(1, 40, 80, 0)",
@@ -50,7 +50,7 @@ const createAnimationTimeline = (
     })
     .add(
       {
-        targets: ".bg",
+        targets: ".background-image",
         opacity: [0, 1],
         translateY: [0, -61],
         translateX: [-60, 0],
@@ -62,13 +62,16 @@ const createAnimationTimeline = (
     .add(
       {
         targets: {
-          irisRadius: getCSSNumericValue(select(".bg"), "--iris-radius"),
+          irisRadius: getCSSNumericValue(
+            select(".background-image"),
+            "--iris-radius"
+          ),
         },
         irisRadius: 100,
         duration: 2000,
         update: (anim) =>
           setProperty(
-            select(".bg"),
+            select(".background-image"),
             "--iris-radius",
             `${anim.animations[0].currentValue}%`
           ),
@@ -77,7 +80,8 @@ const createAnimationTimeline = (
     )
     .add(
       {
-        targets: ".icons img, .info img, .info .button-base",
+        targets:
+          ".banner-icons img, .banner-info img, .banner-info .interactive-button",
         translateY: [-8, 0],
         opacity: [0, 1],
         delay: anime.stagger(120),
@@ -87,7 +91,7 @@ const createAnimationTimeline = (
     )
     .add(
       {
-        targets: ".button-mask",
+        targets: ".interactive-button-mask",
         duration: 1200,
         update: (anim) => {
           const progress = anim.progress / 100;
@@ -156,7 +160,7 @@ const startAnimations = (button, offsetX, offsetY) => {
 
 const init = () => {
   const page = select(".page");
-  const button = select(".button-mask");
+  const button = select(".interactive-button-mask");
   const offsetX = 200;
   const offsetY = 140;
 
