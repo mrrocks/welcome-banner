@@ -2,7 +2,7 @@ import anime from "https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js";
 
 const select = (selector) => document.querySelector(selector);
 
-const getCurrentCSSValue = (element, property) =>
+const getCSSNumericValue = (element, property) =>
   parseFloat(getComputedStyle(element).getPropertyValue(property)) || 0;
 
 const setProperty = (element, property, value) =>
@@ -62,7 +62,7 @@ const createAnimationTimeline = (
     .add(
       {
         targets: {
-          irisRadius: getCurrentCSSValue(select(".bg"), "--iris-radius"),
+          irisRadius: getCSSNumericValue(select(".bg"), "--iris-radius"),
         },
         irisRadius: 100,
         duration: 2000,
@@ -89,7 +89,7 @@ const createAnimationTimeline = (
       {
         targets: ".button-mask",
         duration: 1200,
-        update: function (anim) {
+        update: (anim) => {
           const progress = anim.progress / 100;
           const valueX =
             progress * (button.offsetWidth + offsetX * 2) - offsetX;
@@ -115,8 +115,8 @@ const mouseTracking = (button) => (e) => {
   const y = e.clientY - buttonRect.top;
 
   const maskPosition = {
-    maskX: getCurrentCSSValue(button, "--mask-x"),
-    maskY: getCurrentCSSValue(button, "--mask-y"),
+    maskX: getCSSNumericValue(button, "--mask-x"),
+    maskY: getCSSNumericValue(button, "--mask-y"),
   };
 
   anime({
@@ -125,7 +125,7 @@ const mouseTracking = (button) => (e) => {
     maskY: y,
     easing: "linear",
     duration: 50,
-    update: function () {
+    update: () => {
       setProperty(button, "--mask-x", `${maskPosition.maskX}px`);
       setProperty(button, "--mask-y", `${maskPosition.maskY}px`);
     },
