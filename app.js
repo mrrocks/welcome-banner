@@ -2,10 +2,18 @@ import anime from "https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js";
 
 const select = (selector) => document.querySelector(selector);
 
+const getCurrentCSSValue = (element, property) =>
+  parseFloat(getComputedStyle(element).getPropertyValue(property)) || 0;
+
 const setProperty = (element, property, value) =>
   element.style.setProperty(property, value);
 
-const createAnimationTimeline = (button, offsetX, offsetY) => {
+const createAnimationTimeline = (
+  button,
+  offsetX,
+  offsetY,
+  handleMouseTracking
+) => {
   const animationStartTime = 0;
 
   const tl = anime.timeline({
@@ -53,16 +61,17 @@ const createAnimationTimeline = (button, offsetX, offsetY) => {
     )
     .add(
       {
-        targets: { irisRadius: 0 },
-        irisRadius: [0, 100],
+        targets: {
+          irisRadius: getCurrentCSSValue(select(".bg"), "--iris-radius"),
+        },
+        irisRadius: 100,
         duration: 2000,
         update: (anim) =>
-          document
-            .querySelector(".bg")
-            .style.setProperty(
-              "--iris-radius",
-              `${anim.animations[0].currentValue}%`
-            ),
+          setProperty(
+            select(".bg"),
+            "--iris-radius",
+            `${anim.animations[0].currentValue}%`
+          ),
       },
       animationStartTime + 400
     )
@@ -87,8 +96,11 @@ const createAnimationTimeline = (button, offsetX, offsetY) => {
           const valueY =
             progress * (button.offsetHeight + offsetY * 2) - offsetY;
 
-          button.style.setProperty("--mask-x", `${valueX}px`);
-          button.style.setProperty("--mask-y", `${valueY}px`);
+          setProperty(button, "--mask-x", `${valueX}px`);
+          setProperty(button, "--mask-y", `${valueY}px`);
+        },
+        complete: () => {
+          window.addEventListener("mousemove", handleMouseTracking);
         },
       },
       animationStartTime + 1400
@@ -101,18 +113,40 @@ const mouseTracking = (button) => (e) => {
   const buttonRect = button.getBoundingClientRect();
   const x = e.clientX - buttonRect.left;
   const y = e.clientY - buttonRect.top;
-  setProperty(button, "--mask-x", `${x}px`);
-  setProperty(button, "--mask-y", `${y}px`);
+
+  const maskPosition = {
+    maskX: getCurrentCSSValue(button, "--mask-x"),
+    maskY: getCurrentCSSValue(button, "--mask-y"),
+  };
+
+  anime({
+    targets: maskPosition,
+    maskX: x,
+    maskY: y,
+    easing: "linear",
+    duration: 50,
+    update: function () {
+      setProperty(button, "--mask-x", `${maskPosition.maskX}px`);
+      setProperty(button, "--mask-y", `${maskPosition.maskY}px`);
+    },
+  });
 };
 
 const startAnimations = (button, offsetX, offsetY) => {
   let animationPlayed = false;
-  const tl = createAnimationTimeline(button, offsetX, offsetY);
+  const handleMouseTracking = mouseTracking(button);
+  const tl = createAnimationTimeline(
+    button,
+    offsetX,
+    offsetY,
+    handleMouseTracking
+  );
 
   return () => {
     if (animationPlayed) {
       tl.seek(0);
       tl.pause();
+      window.removeEventListener("mousemove", handleMouseTracking);
     } else {
       tl.play();
     }
@@ -128,7 +162,6 @@ const init = () => {
 
   const handleStartAnimations = startAnimations(button, offsetX, offsetY);
   page.addEventListener("click", handleStartAnimations);
-  page.addEventListener("mousemove", mouseTracking(button));
 };
 
 init();
