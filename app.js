@@ -72,7 +72,7 @@ const createAnimationTimeline = (
     )
     .add({
       targets: "#myRect",
-      opacity: [1, 0.6],
+      opacity: [1, 0.8],
       duration: 600,
       delay: 200,
     })
@@ -119,7 +119,7 @@ const createAnimationTimeline = (
     .add(
       {
         targets: ".interactive-button-mask",
-        duration: 1200,
+        duration: 1400,
         update: (anim) => {
           const progress = anim.progress / 100;
           const valueX =
