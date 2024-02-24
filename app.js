@@ -1,5 +1,6 @@
 import anime from "https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.es.js";
 
+// Utility functions
 const select = (selector) => document.querySelector(selector);
 
 const getCSSNumericValue = (element, property) =>
@@ -7,6 +8,33 @@ const getCSSNumericValue = (element, property) =>
 
 const setProperty = (element, property, value) =>
   element.style.setProperty(property, value);
+
+// Animation related functions
+
+const mouseTracking =
+  (button) =>
+  ({ clientX, clientY }) => {
+    const { left, top } = button.getBoundingClientRect();
+    const x = clientX - left;
+    const y = clientY - top;
+
+    const maskPosition = {
+      maskX: getCSSNumericValue(button, "--mask-x"),
+      maskY: getCSSNumericValue(button, "--mask-y"),
+    };
+
+    anime({
+      targets: maskPosition,
+      maskX: x,
+      maskY: y,
+      easing: "linear",
+      duration: 50,
+      update: () => {
+        setProperty(button, "--mask-x", `${maskPosition.maskX}px`);
+        setProperty(button, "--mask-y", `${maskPosition.maskY}px`);
+      },
+    });
+  };
 
 const createAnimationTimeline = (
   button,
@@ -80,8 +108,7 @@ const createAnimationTimeline = (
     )
     .add(
       {
-        targets:
-          ".banner-icons img, .banner-info img, .banner-info .interactive-button",
+        targets: ".banner-icons img, .banner-info img, .interactive-button",
         translateY: [-8, 0],
         opacity: [0, 1],
         delay: anime.stagger(120),
@@ -103,37 +130,13 @@ const createAnimationTimeline = (
           setProperty(button, "--mask-x", `${valueX}px`);
           setProperty(button, "--mask-y", `${valueY}px`);
         },
-        complete: () => {
-          window.addEventListener("mousemove", handleMouseTracking);
-        },
+        complete: () =>
+          window.addEventListener("mousemove", handleMouseTracking),
       },
       animationStartTime + 1400
     );
 
   return tl;
-};
-
-const mouseTracking = (button) => (e) => {
-  const buttonRect = button.getBoundingClientRect();
-  const x = e.clientX - buttonRect.left;
-  const y = e.clientY - buttonRect.top;
-
-  const maskPosition = {
-    maskX: getCSSNumericValue(button, "--mask-x"),
-    maskY: getCSSNumericValue(button, "--mask-y"),
-  };
-
-  anime({
-    targets: maskPosition,
-    maskX: x,
-    maskY: y,
-    easing: "linear",
-    duration: 50,
-    update: () => {
-      setProperty(button, "--mask-x", `${maskPosition.maskX}px`);
-      setProperty(button, "--mask-y", `${maskPosition.maskY}px`);
-    },
-  });
 };
 
 const startAnimations = (button, offsetX, offsetY) => {
@@ -159,7 +162,9 @@ const startAnimations = (button, offsetX, offsetY) => {
   };
 };
 
-function animateAccountReady(handleStartAnimations) {
+// Account ready animation
+
+const animateAccountReady = (handleStartAnimations) => {
   const accountReady = select(".account-ready");
   const video = select("#welcome-video");
 
@@ -170,9 +175,7 @@ function animateAccountReady(handleStartAnimations) {
       opacity: 1,
       duration: 300,
       easing: "linear",
-      begin: function () {
-        video.play();
-      },
+      begin: () => video.play(),
     });
   });
 
@@ -180,15 +183,15 @@ function animateAccountReady(handleStartAnimations) {
     anime({
       targets: accountReady,
       opacity: 0,
-      duration: 300,
+      duration: 600,
       easing: "linear",
-      complete: function () {
+      complete: () => {
         accountReady.style.display = "none";
         handleStartAnimations();
       },
     });
   });
-}
+};
 
 const resetAccountReady = () => {
   const accountReady = select(".account-ready");
@@ -202,6 +205,8 @@ const resetAccountReady = () => {
   video.style.opacity = 0;
   video.style.display = "none";
 };
+
+// Initialization
 
 const init = () => {
   const button = select(".interactive-button-mask");

@@ -93,7 +93,7 @@ body {
   right: 24px;
   top: 76px;
   width: 1028px;
-  height: 220px;
+  height: 198px;
   overflow: hidden;
   border-radius: 8px;
 }
@@ -102,7 +102,7 @@ body {
   position: absolute;
   display: flex;
   flex-direction: column;
-  gap: 41px;
+  gap: 43px;
   top: 0;
   width: inherit;
   height: inherit;
@@ -114,19 +114,20 @@ body {
 .banner-icons {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .banner-info {
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 19px;
 }
 
 .banner-bottom-section {
   display: flex;
   gap: 16px;
   justify-content: space-between;
+  align-items: flex-end;
 }
 
 /* Button */
