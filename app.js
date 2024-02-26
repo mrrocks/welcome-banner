@@ -72,7 +72,7 @@ const createAnimationTimeline = (
     )
     .add({
       targets: "#myRect",
-      opacity: [1, 0.8],
+      opacity: [1, 0.6],
       duration: 600,
       delay: 200,
     })

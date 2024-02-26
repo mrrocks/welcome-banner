@@ -93,7 +93,7 @@ body {
 
 .banner-svg-border {
   stroke-width: 1.5px;
-  mix-blend-mode: soft-light;
+  mix-blend-mode: overlay;
 }
 
 .banner-outer-wrapper {
