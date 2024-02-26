@@ -41,6 +41,7 @@ body {
   user-select: none;
   overflow: hidden;
   z-index: 1;
+  visibility: hidden;
 }
 
 .account-ready {

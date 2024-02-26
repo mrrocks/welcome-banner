@@ -187,6 +187,7 @@ const animateAccountReady = (handleStartAnimations) => {
       easing: "linear",
       complete: () => {
         accountReady.style.display = "none";
+        select(".page").style.visibility = "visible";
         handleStartAnimations();
       },
     });
