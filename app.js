@@ -175,7 +175,10 @@ const animateAccountReady = (handleStartAnimations) => {
       opacity: 1,
       duration: 300,
       easing: "linear",
-      begin: () => video.play(),
+      begin: () => {
+        video.play();
+        select(".page").style.visibility = "visible";
+      },
     });
   });
 
@@ -187,7 +190,6 @@ const animateAccountReady = (handleStartAnimations) => {
       easing: "linear",
       complete: () => {
         accountReady.style.display = "none";
-        select(".page").style.visibility = "visible";
         handleStartAnimations();
       },
     });
